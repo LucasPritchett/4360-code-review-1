@@ -1,19 +1,20 @@
 from message import Message
-from exceptions import BankingExcpetion, InvalidAccountNumberException
+from exceptions import BankingException, InvalidAccountNumberException
 
 
-message = Message()
+
 
 class User:
-    def __init__(self, name, accounts):
+    def __init__(self, name, accounts, message):
         self.name = name
         self.accounts = accounts
+        self.message = message
 
     def show_accounts(self):
-        message.print("{:<20}{:<0}".format("Account Number", "Amount"))
+        self.message.print("{:<20}{:<0}".format("Account Number", "Amount"))
         for key,val in self.accounts.items():
             balance = val.check_balance()
-            message.print("{:<20}{:<0}".format(key, balance))
+            self.message.print("{:<20}{:<0}".format(key, balance))
 
     
     def deposit(self, args):
@@ -36,7 +37,7 @@ class User:
         try:
             accountNumber = int(args[0])
             amount = int(args[1])
-            account = self.accounts[accountNumber]
+            account = self.accounts.get(accountNumber)
 
             if not account:
                 raise InvalidAccountNumberException
