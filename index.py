@@ -13,10 +13,10 @@ def main():
     
     #authenticate user
     login_attempts = 0
-    failedAttempt = False
+    failed_Attempt = False
     while login_attempts < 3:
-        os.system('cls')
-        if failedAttempt:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        if failed_Attempt:
             message.print("please try again")
         message.print("Welcome to the bank of Py!")
         message.print("please login to continue.")
@@ -31,6 +31,11 @@ def main():
         else:
             break
 
+        if not user:
+        message.print("Too many failed attempts. Exiting...")
+        return
+    
+
     #register UI
     ui.register_command("deposit", user.deposit, "deposit [accountNumber] [amount] - deposit an amount into an account")
     ui.register_command("withdraw", user.withdraw, "withdraw [accountNumber] [amount] - withdraw an amount from an account")
@@ -38,7 +43,7 @@ def main():
 
     #Main Loop
     while True:
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         message.print("What can we do for you today?")
         user.show_accounts()
         ui.show_commands()
@@ -46,11 +51,11 @@ def main():
 
         #exit check
         if(user_inputs[0] == "exit"):
-            print("Good bye")
+            print("Goodbye")
             break
 
-        
-        ui.execute_command(user_inputs[0], user_inputs[1:])
+        if user_inputs:
+            ui.execute_command(user_inputs[0], user_inputs[1:])
         
 
 
