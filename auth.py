@@ -10,9 +10,13 @@ class Auth:
         pass
 
     def login_again(self, username, password):
-        with open('db.json', 'r') as file:
-            users = json.load(file)['users']
-
+        try:
+            with open('db.json', 'r') as file:
+                users = json.load(file)['users']
+         except (FileNotFoundError, json.JSONDecodeError) as e:
+            message.print(f"Error loading user data: {e}")
+            return None
+        
         for user in users:
             if user['name'] == username:
                 if user['password'] == password:
@@ -21,8 +25,8 @@ class Auth:
                         accounts[account['accountNumber']] = Account(account['balance'])
                     return User(user['name'], accounts)
                 else:
-                    message.print("name or password not found")
-            else:
-                message.print("name or password not found")
-            
+                    message.print("Invalid password")
+                    retune None
+          
+        message.print("User not found")
         return None
