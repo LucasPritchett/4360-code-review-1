@@ -12,7 +12,7 @@ class Account:
             self.balance -= amount
             return self.balance
         else:
-            raise InsufficientFundsException
+            raise InsufficientFundsException("Insufficient funds for this withdrawal")
     
     def deposit(self, amount):
         self.balance += amount
